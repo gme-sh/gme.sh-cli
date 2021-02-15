@@ -13,5 +13,5 @@ compile:
     GOOS=windows GOARCH=386 go build -o ./bin/gme-cli-windows-386 ./cmd/gme-shortener/main.go
     @echo "🐡 Compile for FreeBSD"
     GOOS=freebsd GOARCH=amd64 go build -o ./bin/gme-cli-freebsd-amd64 ./cmd/gme-shortener/main.go
-    GOOS=freebsd GOARCH=386 go build -o ./bin/gme-cli-freebsd-386 ./cmd/gme-shortener/main.go  
+    GOOS=freebsd GOARCH=386 go build -o ./bin/gme-cli-freebsd-386 ./cmd/gme-shortener/main.go
     GOOS=freebsd GOARCH=arm go build -o ./bin/gme-cli-freebsd-arm ./cmd/gme-shortener/main.go
