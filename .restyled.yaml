@@ -1,0 +1,9 @@
+enabled: true
+image: 'restyled/restyler-gofmt:go1.15.7'
+command:
+  - gofmt
+  - '-w'
+arguments: []
+include:
+  - '**/*.go'
+interpreters: []
