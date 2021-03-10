@@ -1,10 +1,10 @@
 package gmesh
 
 const (
-	// VERSION -> Muss noch in ne Config
-	VERSION = "0.0.1-alpha"
-	APIURL  = "http://127.0.0.1:80/"
-	PREFIX  = "https://gme.sh/"
+	// Version -> Muss noch in ne Config
+	Version = "0.1.0-alpha"
+	ApiUrl  = "https://gme.sh/"
+	Prefix  = "https://gme.sh/"
 )
 
 type CLI struct {

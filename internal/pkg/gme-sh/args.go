@@ -12,28 +12,30 @@ func (c *CLI) ParseArgs() (err error) {
 	}
 
 	app := &cli.App{
-		Name:    "gme",
-		Version: VERSION,
-		Usage:   "urls goes brrrrrr",
+		Name:    "🚀 GME.sh",
+		Usage:   "long url goes brrr",
+		Version: Version,
 		Commands: []*cli.Command{
 			{
-				Name:    "sh",
-				Usage:   "Short an URL",
-				Aliases: []string{"short", "s"},
+				Name:    "short",
+				Usage:   "Short an loooong URL",
+				Aliases: []string{"s", "sh"},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:    "URL",
 						Aliases: []string{"u"},
-						Value:   "",
 					},
 					&cli.BoolFlag{
-						Name:    "qrcode",
-						Aliases: []string{"qr", "q"},
+						Name:    "show-secret",
+						Aliases: []string{"s"},
 					},
 					&cli.StringFlag{
-						Name:    "file",
-						Aliases: []string{"f"},
-						Value:   "",
+						Name:    "alias",
+						Aliases: []string{"a"},
+					},
+					&cli.BoolFlag{
+						Name:    "qr-code",
+						Aliases: []string{"qr", "q"},
 					},
 				},
 				Action: c.ActionShortURL,
@@ -52,6 +54,9 @@ func (c *CLI) ParseArgs() (err error) {
 					return nil
 				},
 			},
+		},
+		ExitErrHandler: func(context *cli.Context, err error) {
+			fmt.Println("🤬📉 ERROR:", err)
 		},
 	}
 	err = app.Run(os.Args)
