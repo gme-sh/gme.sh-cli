@@ -2,6 +2,7 @@ package gmesh
 
 import (
 	"github.com/urfave/cli/v2"
+	"net/url"
 	"strings"
 )
 
@@ -17,4 +18,16 @@ func (c *CLI) FindUrl(ctx *cli.Context) (u string) {
 		}
 	}
 	return
+}
+
+func IsURL(str string) bool {
+	if len(str) > 1000 {
+		return false
+	}
+	if strings.Contains(str, " ") {
+		return false
+	}
+	// try to parse url
+	_, err := url.Parse(str)
+	return err == nil
 }

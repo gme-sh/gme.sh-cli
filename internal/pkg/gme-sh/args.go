@@ -1,8 +1,10 @@
 package gmesh
 
 import (
+	"errors"
 	"fmt"
 	"github.com/urfave/cli/v2"
+	"log"
 	"os"
 )
 
@@ -19,7 +21,7 @@ func (c *CLI) ParseArgs() (err error) {
 			{
 				Name:    "short",
 				Usage:   "Short an loooong URL",
-				Aliases: []string{"s", "sh"},
+				Aliases: []string{"s", "sh", "c", "create", "new"},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:    "URL",
@@ -41,6 +43,19 @@ func (c *CLI) ParseArgs() (err error) {
 				Action: c.ActionShortURL,
 			},
 			{
+				Name:    "delete",
+				Usage:   "Deletes a short URL",
+				Aliases: []string{"del", "remove", "rem"},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:     "secret",
+						Aliases:  []string{"s"},
+						Required: true,
+					},
+				},
+				Action: c.ActionDeleteURL,
+			},
+			{
 				Name:  "stats",
 				Usage: "Shows you the stats of a shortened URL",
 				Action: func(context *cli.Context) (err error) {
@@ -51,6 +66,19 @@ func (c *CLI) ParseArgs() (err error) {
 				Name:  "inspect",
 				Usage: "Inspects an URL",
 				Action: func(context *cli.Context) (err error) {
+					return nil
+				},
+			},
+			{
+				Name:  "test",
+				Usage: "Test input",
+				Action: func(ctx *cli.Context) error {
+					u := c.FindUrl(ctx)
+					if u == "" {
+						return errors.New("no url given")
+					}
+					log.Println("Testing:", u)
+					log.Println("👉 IsURL?", IsURL(u))
 					return nil
 				},
 			},
