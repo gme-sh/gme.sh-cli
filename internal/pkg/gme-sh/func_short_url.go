@@ -10,6 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"os"
 	"strings"
+	"time"
 )
 
 type SuccessableCreate struct {
@@ -24,16 +25,19 @@ func (c *CLI) ActionShortURL(ctx *cli.Context) (err error) {
 		return errors.New("no url given")
 	}
 
+	// parse duration
+	ex := ctx.Duration("expire")
+	alias := ctx.String("alias")
+
 	// create payload
 	payload := &shortreq.CreateShortURLPayload{
 		FullURL:            u,
-		ExpireAfterSeconds: 0,
-		PreferredAlias:     "",
+		ExpireAfterSeconds: int(ex.Seconds()),
+		PreferredAlias:     short.ShortID(alias),
 	}
 
 	// alias?
-	if alias := ctx.String("alias"); alias != "" {
-		payload.PreferredAlias = short.ShortID(alias)
+	if alias != "" {
 		fmt.Println("🚀", u, "->", Prefix+alias, "...")
 	} else {
 		fmt.Println("🚀", u, "...")
@@ -66,15 +70,20 @@ func (c *CLI) ActionShortURL(ctx *cli.Context) (err error) {
 	sh := s.Data
 
 	var secret string
-	if ctx.Bool("show-secret") {
-		secret = sh.Secret
-	} else {
+	if ctx.Bool("hide-secret") {
 		secret = repeat("*", len(sh.Secret))
+	} else {
+		secret = sh.Secret
 	}
 
+	// output url and expiration
+	if ex != 0 {
+		fmt.Println("⏰", "Expires at", time.Now().Add(ex).Format("02.01.2006 15:04:05"))
+	}
 	url := Prefix + sh.ID.String()
 	fmt.Println("🦾", url, "[Secret: "+secret+"]")
 
+	// display qr code
 	if ctx.Bool("qr-code") {
 		config := qrterminal.Config{
 			BlackChar: qrterminal.WHITE,

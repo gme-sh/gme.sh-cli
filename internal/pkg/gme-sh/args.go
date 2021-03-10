@@ -27,14 +27,19 @@ func (c *CLI) ParseArgs() (err error) {
 						Name:    "URL",
 						Aliases: []string{"u"},
 					},
-					&cli.BoolFlag{
-						Name:    "show-secret",
-						Aliases: []string{"s"},
-					},
 					&cli.StringFlag{
 						Name:    "alias",
 						Aliases: []string{"a"},
 					},
+					&cli.DurationFlag{
+						Name:    "expire",
+						Aliases: []string{"expires", "ex", "e", "duration", "dura", "d"},
+					},
+					&cli.BoolFlag{
+						Name:    "hide-secret",
+						Aliases: []string{"x"},
+					},
+
 					&cli.BoolFlag{
 						Name:    "qr-code",
 						Aliases: []string{"qr", "q"},
