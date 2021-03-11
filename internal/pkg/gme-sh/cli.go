@@ -30,6 +30,10 @@ func (c *CLI) Run() (err error) {
 	return c.ParseArgs()
 }
 
-func newSpinner() *spinner.Spinner {
-	return spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+func newSpinner(message string) (sp *spinner.Spinner) {
+	sp = spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+	sp.Prefix = message + " ["
+	sp.Suffix = "]"
+	sp.FinalMSG = sp.Prefix + "done" + sp.Suffix + "\n"
+	return
 }

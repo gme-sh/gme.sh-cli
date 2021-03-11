@@ -9,8 +9,7 @@ import (
 	"strings"
 )
 
-func (c *CLI) ActionDeleteURL(ctx *cli.Context) (err error) {
-	u := c.FindUrl(ctx)
+func (c *CLI) _actionDeleteURL(u, s string) (err error) {
 	if u == "" {
 		return errors.New("no url given")
 	}
@@ -22,12 +21,7 @@ func (c *CLI) ActionDeleteURL(ctx *cli.Context) (err error) {
 		u = u[strings.LastIndex(u, "/")+1:]
 	}
 
-	s := ctx.String("secret")
-
-	sp := newSpinner()
-	sp.Prefix = fmt.Sprintf("📉 %s (with secret '%s') [", u, s)
-	sp.Suffix = "]"
-	sp.FinalMSG = sp.Prefix + sp.Suffix + "\n"
+	sp := newSpinner(fmt.Sprintf("📉 %s (with secret '%s')", u, s))
 	// start spinner
 	sp.Start()
 
@@ -52,5 +46,12 @@ func (c *CLI) ActionDeleteURL(ctx *cli.Context) (err error) {
 		return errors.New(su.Message)
 	}
 
+	return
+}
+
+func (c *CLI) ActionDeleteURL(ctx *cli.Context) (err error) {
+	u := c.FindUrl(ctx)
+	s := ctx.String("secret")
+	err = c._actionDeleteURL(u, s)
 	return
 }
