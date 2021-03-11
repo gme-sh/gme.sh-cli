@@ -53,9 +53,8 @@ func (c *CLI) RunApp() (err error) {
 				Aliases: []string{"del", "remove", "rem"},
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:     "secret",
-						Aliases:  []string{"s"},
-						Required: true,
+						Name:    "secret",
+						Aliases: []string{"s"},
 					},
 				},
 				Action: c.ActionDeleteURL,

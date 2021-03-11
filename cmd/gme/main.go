@@ -3,6 +3,7 @@ package main
 import (
 	surveyCore "github.com/AlecAivazis/survey/v2/core"
 	"github.com/full-stack-gods/gme.sh-cli/internal/api"
+	"github.com/full-stack-gods/gme.sh-cli/internal/config"
 	"github.com/full-stack-gods/gme.sh-cli/internal/interaction"
 	"github.com/mgutz/ansi"
 	"log"
@@ -24,9 +25,11 @@ func main() {
 		}
 	}
 
-	cli := interaction.New(&api.API{
-		ApiUrl: "https://gme.sh",
-	})
+	// read config
+	cfg := config.ReadConfig()
+
+	// start app
+	cli := interaction.New(api.NewApi(cfg), cfg)
 	if err := cli.Run(); err != nil {
 		log.Fatalln("Error:", err)
 		return

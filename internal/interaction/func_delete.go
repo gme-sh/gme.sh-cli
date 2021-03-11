@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/full-stack-gods/gme.sh-cli/internal/api"
+	"github.com/full-stack-gods/gme.sh-cli/internal/config"
 	"github.com/gme-sh/gme.sh-api/pkg/gme-sh/shortreq"
 	"github.com/mgutz/ansi"
 	"github.com/urfave/cli/v2"
@@ -17,7 +19,22 @@ const (
 
 func (c *CLI) ActionDeleteURL(ctx *cli.Context) (err error) {
 	u := c.FindUrl(ctx)
-	s := ctx.String("secret")
+	if u = api.ExtractIDFromURL(u); u == "" {
+		return errors.New("no url given")
+	}
+
+	// read secrets
+	var s string
+	sec := config.ReadSecrets()
+	if x, ok := sec.Secrets[u]; ok {
+		s = x
+	}
+	if x := ctx.String("secret"); x != "" {
+		s = x
+	} else if s == "" {
+		return errors.New("no secret given")
+	}
+
 	err = c._actionDeleteURL(u, s)
 	return
 }
@@ -37,7 +54,11 @@ func (c *CLI) _actionDeleteURL(u, sec string) (err error) {
 		return c._recoverDeleteURL(s, u, sec)
 	}
 	fmt.Println(ansi.Green+"OKAY:", ansi.White+"Deleted Alias", ansi.Reset)
-	return nil
+	x := config.ReadSecrets()
+	delete(x.Secrets, u)
+	err = x.Save()
+
+	return
 }
 
 func (c *CLI) _recoverDeleteURL(s *shortreq.Successable, u, sec string) (err error) {

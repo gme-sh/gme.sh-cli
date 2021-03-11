@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/full-stack-gods/gme.sh-cli/internal/api"
+	"github.com/full-stack-gods/gme.sh-cli/internal/config"
 	"github.com/gme-sh/gme.sh-api/pkg/gme-sh/short"
 	"github.com/gme-sh/gme.sh-api/pkg/gme-sh/shortreq"
 	"github.com/mdp/qrterminal"
@@ -87,6 +88,14 @@ func (c *CLI) _actionShortURL(u, alias string, ex time.Duration, hideSecret bool
 			Level:     qrterminal.L,
 		}
 		qrterminal.GenerateWithConfig(url, config)
+	}
+
+	// save secret
+	if c.Config.SaveSecrets {
+		s := config.ReadSecrets()
+		if err := s.Add(sh.ID.String(), sh.Secret); err != nil {
+			fmt.Println(ansi.Red+"ERROR:", ansi.White+err.Error(), ansi.Reset)
+		}
 	}
 
 	return nil

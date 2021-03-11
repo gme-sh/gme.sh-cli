@@ -3,6 +3,7 @@ package interaction
 import (
 	"github.com/briandowns/spinner"
 	"github.com/full-stack-gods/gme.sh-cli/internal/api"
+	"github.com/full-stack-gods/gme.sh-cli/internal/config"
 	"time"
 )
 
@@ -12,13 +13,15 @@ const (
 )
 
 type CLI struct {
-	Pipe string
-	API  *api.API
+	Pipe   string
+	API    *api.API
+	Config *config.Config
 }
 
-func New(api *api.API) *CLI {
+func New(api *api.API, cfg *config.Config) *CLI {
 	return &CLI{
-		API: api,
+		API:    api,
+		Config: cfg,
 	}
 }
 

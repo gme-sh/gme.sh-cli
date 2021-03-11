@@ -18,7 +18,7 @@ func (a *API) CreateShortURL(p *shortreq.CreateShortURLPayload) (s *SuccessableC
 }
 
 func (a *API) DeleteShortURL(url, secret string) (s *shortreq.Successable, err error) {
-	if url = extractIDFromURL(url); url == "" {
+	if url = ExtractIDFromURL(url); url == "" {
 		return nil, errors.New("no url given")
 	}
 	res, err := a.delete("/" + url + "/" + secret)
