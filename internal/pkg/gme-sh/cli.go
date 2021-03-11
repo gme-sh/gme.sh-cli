@@ -1,5 +1,10 @@
 package gmesh
 
+import (
+	"github.com/briandowns/spinner"
+	"time"
+)
+
 const (
 	// Version -> Muss noch in ne Config
 	Version = "0.1.0-alpha"
@@ -23,4 +28,8 @@ func (c *CLI) Run() (err error) {
 	}
 	// show help
 	return c.ParseArgs()
+}
+
+func newSpinner() *spinner.Spinner {
+	return spinner.New(spinner.CharSets[9], 100*time.Millisecond)
 }

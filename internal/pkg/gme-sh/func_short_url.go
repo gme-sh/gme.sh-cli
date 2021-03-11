@@ -37,11 +37,19 @@ func (c *CLI) ActionShortURL(ctx *cli.Context) (err error) {
 	}
 
 	// alias?
+	var prefix string
 	if alias != "" {
-		fmt.Println("🚀", u, "->", Prefix+alias, "...")
+		prefix = fmt.Sprintf("🚀 %s -> %s [", u, Prefix+alias)
 	} else {
-		fmt.Println("🚀", u, "...")
+		prefix = fmt.Sprintf("🚀 %s [", u)
 	}
+
+	sp := newSpinner()
+	sp.Prefix = prefix
+	sp.Suffix = "]"
+	sp.FinalMSG = sp.Prefix + sp.Suffix + "\n"
+	// start spinner
+	sp.Start()
 
 	// make request
 	var res *req.Resp
@@ -49,6 +57,10 @@ func (c *CLI) ActionShortURL(ctx *cli.Context) (err error) {
 		ApiUrl+"create",
 		req.BodyJSON(payload),
 	)
+
+	// stop spinner
+	sp.Stop()
+
 	if res == nil {
 		return errors.New("response was null")
 	}

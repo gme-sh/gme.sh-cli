@@ -24,10 +24,19 @@ func (c *CLI) ActionDeleteURL(ctx *cli.Context) (err error) {
 
 	s := ctx.String("secret")
 
-	fmt.Println("📉", u, "[", "with secret", s, "]", "...")
+	sp := newSpinner()
+	sp.Prefix = fmt.Sprintf("📉 %s (with secret '%s') [", u, s)
+	sp.Suffix = "]"
+	sp.FinalMSG = sp.Prefix + sp.Suffix + "\n"
+	// start spinner
+	sp.Start()
 
 	var res *req.Resp
 	res, err = req.Delete(fmt.Sprintf("%s%s/%s", ApiUrl, u, s))
+
+	// stop spinner
+	sp.Stop()
+
 	if err != nil {
 		return
 	}
