@@ -1,23 +1,25 @@
-package gmesh
+package interaction
 
 import (
 	"github.com/briandowns/spinner"
+	"github.com/full-stack-gods/gme.sh-cli/internal/api"
 	"time"
 )
 
 const (
 	// Version -> Muss noch in ne Config
 	Version = "0.1.0-alpha"
-	ApiUrl  = "https://gme.sh/"
-	Prefix  = "https://gme.sh/"
 )
 
 type CLI struct {
 	Pipe string
+	API  *api.API
 }
 
-func New() *CLI {
-	return &CLI{}
+func New(api *api.API) *CLI {
+	return &CLI{
+		API: api,
+	}
 }
 
 func (c *CLI) Run() (err error) {
@@ -27,7 +29,7 @@ func (c *CLI) Run() (err error) {
 		return
 	}
 	// show help
-	return c.ParseArgs()
+	return c.RunApp()
 }
 
 func newSpinner(message string) (sp *spinner.Spinner) {

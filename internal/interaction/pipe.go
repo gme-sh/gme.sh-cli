@@ -1,4 +1,4 @@
-package gmesh
+package interaction
 
 import (
 	"bufio"

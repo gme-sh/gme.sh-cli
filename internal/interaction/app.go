@@ -1,4 +1,4 @@
-package gmesh
+package interaction
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func (c *CLI) ParseArgs() (err error) {
+func (c *CLI) RunApp() (err error) {
 	cli.VersionPrinter = func(context *cli.Context) {
 		fmt.Printf("GME-CLI-Version 🚀 %s\n", context.App.Version)
 	}

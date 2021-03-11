@@ -1,4 +1,4 @@
-package gmesh
+package interaction
 
 import (
 	"github.com/urfave/cli/v2"
