@@ -31,10 +31,7 @@ func (c *CLI) ActionDeleteURL(ctx *cli.Context) (err error) {
 	}
 	if x := ctx.String("secret"); x != "" {
 		s = x
-	} else if s == "" {
-		return errors.New("no secret given")
 	}
-
 	err = c._actionDeleteURL(u, s)
 	return
 }

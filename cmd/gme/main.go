@@ -6,11 +6,9 @@ import (
 	"github.com/full-stack-gods/gme.sh-cli/internal/config"
 	"github.com/full-stack-gods/gme.sh-cli/internal/interaction"
 	"github.com/mgutz/ansi"
-	"log"
 )
 
 func main() {
-
 	// override survey's poor choice of color
 	// https://github.com/cli/cli
 	surveyCore.TemplateFuncsWithColor["color"] = func(style string) string {
@@ -30,8 +28,5 @@ func main() {
 
 	// start app
 	cli := interaction.New(api.NewApi(cfg), cfg)
-	if err := cli.Run(); err != nil {
-		log.Fatalln("Error:", err)
-		return
-	}
+	_ = cli.Run()
 }
