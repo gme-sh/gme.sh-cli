@@ -21,6 +21,12 @@ const (
 	AliasOccupiedDeleteOld      = "Delete old alias"
 	AliasOccupiedGenerateRandom = "Generate random alias"
 	AliasOccupiedNothing        = "Nothing"
+
+	//
+
+	AliasInvalidReenter = AliasOccupiedNewAlias
+	AliasInvalidRetry   = "Retry"
+	AliasInvalidNothing = AliasOccupiedNothing
 )
 
 func (c *CLI) ActionShortURL(ctx *cli.Context) (err error) {
@@ -40,10 +46,11 @@ func (c *CLI) ActionShortURL(ctx *cli.Context) (err error) {
 
 func (c *CLI) _actionShortURL(u, alias string, ex time.Duration, hideSecret bool, qrCode bool) (err error) {
 	// create payload
+	id := short.ShortID(alias)
 	payload := &shortreq.CreateShortURLPayload{
 		FullURL:            u,
 		ExpireAfterSeconds: int(ex.Seconds()),
-		PreferredAlias:     short.ShortID(alias),
+		PreferredAlias:     id,
 	}
 
 	prefix := orElse(alias == "",
@@ -193,6 +200,40 @@ func (c *CLI) _recoverShortURL(s *api.SuccessableCreate, u, alias string, ex tim
 			log.Println("wth?!")
 			return nil
 		}
+
+	case shortreq.ResponseErrInvalidID.InternalCode:
+		fmt.Println(ansi.Red+"ERROR:", ansi.White+"Invalid ID (Alias).", ansi.Reset)
+
+		var wtd string
+		sel := &survey.Select{
+			Message: "What do we do about it?",
+			Options: []string{
+				AliasInvalidReenter,
+				AliasInvalidRetry,
+				AliasInvalidNothing,
+			},
+		}
+		if err = survey.AskOne(sel, &wtd); err != nil {
+			return
+		}
+
+		switch wtd {
+		case AliasInvalidReenter:
+			i := &survey.Input{
+				Message: "New Alias",
+				Default: alias,
+			}
+			if err = survey.AskOne(i, &alias); err != nil {
+				return
+			}
+			return c._actionShortURL(u, alias, ex, hideSecret, qrCode)
+		case AliasInvalidRetry:
+			return c._actionShortURL(u, alias, ex, hideSecret, qrCode)
+		case AliasInvalidNothing:
+			return nil
+		}
+
+		return nil
 
 	case shortreq.ResponseOkCreate.InternalCode:
 		fmt.Println("Nothing to recover ¯\\_(ツ)_/¯")
