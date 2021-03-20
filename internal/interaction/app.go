@@ -60,6 +60,26 @@ func (c *CLI) RunApp() (err error) {
 				Action: c.ActionDeleteURL,
 			},
 			{
+				Name: "pool",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name: "name",
+					},
+					&cli.StringFlag{
+						Name:    "pool-id",
+						Aliases: []string{"i"},
+					},
+					&cli.StringFlag{
+						Name:    "secret",
+						Aliases: []string{"s"},
+					},
+					&cli.BoolFlag{
+						Name: "watch",
+					},
+				},
+				Action: c.ActionWatchPool,
+			},
+			{
 				Name:  "stats",
 				Usage: "Shows you the stats of a shortened URL",
 				Action: func(context *cli.Context) (err error) {

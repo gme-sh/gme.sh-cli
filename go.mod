@@ -5,10 +5,11 @@ go 1.15
 require (
 	github.com/AlecAivazis/survey/v2 v2.2.9
 	github.com/BurntSushi/toml v0.3.1
+	github.com/atotto/clipboard v0.1.4
 	github.com/briandowns/spinner v1.12.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/fatih/color v1.10.0 // indirect
-	github.com/gme-sh/gme.sh-api v0.0.0-20210312171049-298408d5fbad
+	github.com/gme-sh/gme.sh-api v1.0.2-0.20210320181525-ac70c0ac763e
 	github.com/imroc/req v0.3.0
 	github.com/klauspost/compress v1.11.12 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
